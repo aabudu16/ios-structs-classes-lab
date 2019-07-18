@@ -3,7 +3,7 @@
 Fork and clone this repo. On your fork, answer and commit the follow questions. When you are finished, submit the link to your repo on Canvas.
 
 
-## Question 1
+## Question 1√
 
 Given this class that represents a giant:
 
@@ -26,15 +26,29 @@ let fred = Giant(name: "Fred", weight: 340.0, homePlanet: "Earth")
 Will these three lines of code run? If not, why not?
 
 ```swift
-fred.name = "Brick"
-fred.weight = 999.2
-fred.homePlanet = "Mars"
+fred.name = "Brick"  // WILL RNN
+fred.weight = 999.2 // WILL RUN
+fred.homePlanet = "Mars" WILL NOT RUN. Because it is a constant and cant be modified.
 ```
 
 Fix the class definition for `Giant` in the space below so that it **does** work:
 
+```swift
+class Giant {
+var name: String
+var weight: Double
+var homePlanet: String
 
-## Question 2
+init(name: String, weight: Double, homePlanet: String) {
+self.name = name
+self.weight = weight
+self.homePlanet = homePlanet
+}
+}
+
+let fred = Giant(name: "Fred", weight: 340.0, homePlanet: "Earth")
+```
+## Question 2√
 
 Take a look at this struct that represents an alien:
 
@@ -55,10 +69,24 @@ bilbo.height = 1.42
 bilbo.homePlanet = "Saturn"
 ```
 
+they will not run because the bilbo is a constant and the arguements cant be changed.
+
 Change the declaration of `bilbo` so that the above three lines of code **do** work:
+```swift
+struct Alien {
+var name: String
+var height: Double
+var homePlanet: String
+}
+var bilbo = Alien(name: "Bilbo", height: 1.67, homePlanet: "Venus")
 
 
-## Question 3
+bilbo.name = "Jake"
+bilbo.height = 1.42
+bilbo.homePlanet = "Saturn"
+```
+
+## Question 3√
 
 Consider this bit of code that uses the `Giant` class:
 
@@ -70,8 +98,10 @@ jason.name = "Jason"
 
 What will the value of `edgar.name` be after those three lines of code are run? What will the value of `jason.name` be? Why?
 
+Since jason is referencing  edgar, any chanes made to its property will affect any instance of its creation. So since jason.name was changed to "Jason", edgar.name will be will also be "Jason"
+jason.name will be "Jason " because it was changed.
 
-## Question 4
+## Question 4√
 
 Given this bit of code that uses the `Alien` struct:
 
@@ -83,10 +113,13 @@ charlesFromJupiter.homePlanet = "Jupiter"
 
 What will the value of `charles.homePlanet` be after the above code run? What about the value of `charlesFromJupiter.homePlanet`? Why?
 
+charles.homePlanet will be "Pluto" after the code has been ran. 
+charlesFromJupiter.homePlanet will be "Jupiter" because it is a value type
 
-## Question 5
 
-Here's a struct that represents a bank account:
+## Question 5√
+
+Here's a struct that represents a bank account: √
 
 ```swift
 struct BankAccount {
@@ -103,11 +136,28 @@ struct BankAccount {
 }
 ```
 
-Does this code work? Why or why not?
+Does this code work? Why or why not? √
+
+The code would not work because balance isnt mutable. (self is immitable)
 
 Fix the `BankAccount` struct so it does work.
 
-Given the code below (which should incorporate any fixes you made):
+```swift
+struct BankAccount {
+var owner: String
+var balance: Double
+
+mutating func deposit(_ amount: Double) {
+balance += amount
+}
+
+mutating func withdraw(_ amount: Double) {
+balance -= amount
+}
+}
+```
+
+Given the code below (which should incorporate any fixes you made):      X
 
 ```swift
 var joeAccount = BankAccount(owner: "Joe", balance: 100.0)
@@ -115,24 +165,100 @@ var joeOtherAccount = joeAccount
 joeAccount.withdraw(50.0)
 ```
 
-What will the value of `joeAccount.balance` be after the above code runs? What about the value of `joeOtherAccount.balance`? Why?
+What will the value of `joeAccount.balance` be after the above code runs? What about the value of √ `joeOtherAccount.balance`? Why?
+
+joeAccount.balance = Will be 50
+joeOtherAccount.balance = Will still be 100 because  joeOtherAccount made a copy of the value and was unchanged with  joeAccount.balance having a withdraw
 
 
 ## Question 6
 
 a. Write a struct called `Person` that has 3 properties of type `String`: a first name, a last name and a middle name. Have the middle name be optional. Create 2 instances of a `Person`, one with a middle name and one without. Print one of their first names.
 
+```swift
+struct Person {
+var firsName:String
+var lastName:String
+var middleName:String?
+}
+
+var person1 = Person(firsName: "Adam", lastName: "Jackson", middleName: "Henry")
+
+var person2 = Person(firsName: "Ayoola", lastName: "Abudu", middleName: nil)
+```
 
 b. Write a method in `Person` called `fullName` that will return a formatted string of an instance's full name. Call this method on both the instances you created in part a.
 
+```swift
+struct Person {
+var firsName:String
+var lastName:String
+var middleName:String?
+
+func fullname() -> String {
+if let middle = middleName{
+return   "my full name is \(firsName) \(middle) \(lastName)"
+}else {
+return   "my full name is \(firsName) \(lastName)"
+}
+}
+}
+
+var person1 = Person(firsName: "Adam", lastName: "Jackson", middleName: "Henry")
+
+var person2 = Person(firsName: "Ayoola", lastName: "Abudu", middleName: nil)
+
+print(person1.fullname())
+print(person2.fullname())
+```
 
 ## Question 7
 
 a. Create a class called `Book` that has properties `title`, `author` and `rating`, of type `String`, `String`, and `Double` respectively. Don't forget the initializer. Create some instances of `Book`.
 
+```swift
+class Book {
+var title:String
+var author:String
+var rating:Double
+
+init (title:String, author:String, rating:Double) {
+self .title = title
+self .author = author
+self .rating = rating
+}
+
+}
+
+var favoriteBook = Book(title: "Harry Potter", author: "J. K. Rowling", rating: 9.2)
+```
 
 b. Add a method to `Book` called `isGood` that returns `true` if its rating is greater than or equal to 7
+```swift
+class Book {
+var title:String
+var author:String
+var rating:Double
 
+init (title:String, author:String, rating:Double) {
+self .title = title
+self .author = author
+self .rating = rating
+}
+
+func isGood () -> Bool {
+if rating >= 7 {
+return true
+}else {
+return false
+}
+}
+}
+
+var favoriteBook = Book(title: "Harry Potter", author: "J. K. Rowling", rating: 9.2)
+
+favoriteBook.isGood()
+```
 
 ## Question 8
 
@@ -153,6 +279,15 @@ dog1.breed //returns "unknown"
 dog1.mood //returns "calm"
 dog1.hungry //returns false
 ```
+```swift
+class Dog {
+
+var name = "dog"
+var breed = "unknown"
+var mood = "calm"
+var hungry = false
+}
+```
 
 b. Add an `init` method so that you can initialize new dogs with values for name, breed, mood, and hungry. It should still have the same default values for these properties
 
@@ -163,7 +298,27 @@ dog2.breed //returns "English Setter"
 dog2.mood //returns 'excited'
 dog2.hungry //returns true
 ```
+```swift
+class Dog {
 
+var name:String
+var breed:String
+var mood:String
+var hungry:Bool
+
+init (name:String, breed:String, mood:String, hungry:Bool) {
+self .name = name
+self .breed = breed
+self .mood = mood
+self .hungry = hungry
+}
+}
+var dog2 = Dog(name: "Oreo", breed: "English Setter", mood: "excited", hungry: true)
+dog2.name
+dog2.breed
+dog2.mood
+dog2.hungry
+```
 c. Add an instance method called `playFetch()`. It should set the dog's `hungry` property to `true`, set its mood property to `playful`, and print "Ruff!"
 
 ```swift
@@ -175,9 +330,74 @@ dog3.hungry //returns true
 dog3.mood //returns "playful"
 ```
 
+```swift
+class Dog {
+
+var name:String
+var breed:String
+var mood:String
+var hungry:Bool
+
+init (name:String, breed:String, mood:String, hungry:Bool) {
+self .name = name
+self .breed = breed
+self .mood = mood
+self .hungry = hungry
+}
+func playFetch() {
+self .hungry = true
+self .mood = "playful"
+print("wolf")
+}
+}
+
+var dog3 = Dog(name: "Rhett", breed: "English Setter", mood: "excited", hungry: false)
+dog3.hungry 
+dog3.mood
+dog3.playFetch()
+dog3.hungry
+dog3.mood
+
+```
+
 d. Add an instance method called `feed()`. If the dog is hungry, it should set `hungry` to `false` and print "Woof!" If the dog is not hungry, it should print "The dog doesn't look hungry"
 
 ```swift
+var dog4 = Dog(name: "Partner", breed: "Golden Retriever", mood: "thoughtful", hungry: true)
+dog4.hungry //returns true
+dog4.feed() //prints "Woof!"
+dog4.hungry //returns false
+```
+
+```swift
+class Dog {
+
+var name:String
+var breed:String
+var mood:String
+var hungry:Bool
+
+init (name:String, breed:String, mood:String, hungry:Bool) {
+self .name = name
+self .breed = breed
+self .mood = mood
+self .hungry = hungry
+}
+func playFetch() {
+self .hungry = true
+self .mood = "playful"
+print("wolf")
+}
+func feed () {
+if hungry == true {
+self .hungry = false
+}
+print("wolf")
+}
+
+}
+
+
 var dog4 = Dog(name: "Partner", breed: "Golden Retriever", mood: "thoughtful", hungry: true)
 dog4.hungry //returns true
 dog4.feed() //prints "Woof!"
@@ -195,11 +415,87 @@ print(dog5.toString())
 //Mood: feeling pawesome
 ```
 
+```swift
+class Dog {
+
+var name:String
+var breed:String
+var mood:String
+var hungry:Bool
+
+init (name:String, breed:String, mood:String, hungry:Bool) {
+self .name = name
+self .breed = breed
+self .mood = mood
+self .hungry = hungry
+}
+func playFetch() {
+self .hungry = true
+self .mood = "playful"
+print("wolf")
+}
+func feed () {
+if hungry == true {
+self .hungry = false
+}
+print("wolf")
+}
+func toString()-> String {
+return "This dogs name is \(name), its breed is \(breed) and its \(mood)"
+
+}
+
+}
+
+var dog5 = Dog(name: "Rascal", breed: "Golden Retriever", mood: "feeling pawesome", hungry: true)
+print(dog5.toString())
+```
+
 f. Add a type property called `count` that keeps track of how many dogs have been created so far.
 
 //Ex: There have been five dogs created so far
 `Dog.count //returns 5`
 
+```swift
+class Dog {
+
+var name:String
+var breed:String
+var mood:String
+var hungry:Bool
+static var count = 0
+
+init (name:String, breed:String, mood:String, hungry:Bool) {
+self .name = name
+self .breed = breed
+self .mood = mood
+self .hungry = hungry
+Dog.count += 1
+}
+func playFetch() {
+self .hungry = true
+self .mood = "playful"
+print("wolf")
+}
+func feed () {
+if hungry == true {
+self .hungry = false
+}
+print("wolf")
+}
+func toString()-> String {
+return "This dogs name is \(name), its breed is \(breed) and its \(mood)"
+
+}
+}
+
+var dog5 = Dog(name: "Rascal", breed: "Golden Retriever", mood: "feeling pawesome", hungry: true)
+var dog2 = Dog(name: "Rascal", breed: "Golden Retriever", mood: "feeling pawesome", hungry: true)
+class count:Dog {
+
+}
+
+```
 
 ## Question 9
 
@@ -211,7 +507,14 @@ K = C + 273
 
 a. Make a struct called `FreezingPoint` that has three properties: `celsius`, `fahrenheit`, and `kelvin`. Give them all default values equal to the freezing point of water.
 
+```swift
+struct FreezingPoint {
+var celsius = 0.0
+var fahrenheit = 32.0
+var kelvin = 273.2
 
+}
+```
 b. Make a struct called `Celsius` that has three properties: `celsius`, `fahrenheit`, and `kelvin`. Give `celsius` a default value of `0.0`, and make the values of `fahrenheit` and `kelvin` correct values, converted from the `celsius` property.
 
 ```swift
@@ -221,8 +524,46 @@ tenDegreesCelsius.kelvin //returns 283.0
 tenDegreesCelsius.fahrenheit //returns 50.0
 ```
 
-c. Give the `Celsius` struct a method called `isBelowFreezing` that returns a `Bool` (true if the temperature is below freezing).
+```swift
+struct Celsius {
+var celsius = 0.0
+var fahrenheit = Double()
+var kelvin = Double()
 
+init (celsius:Double){
+fahrenheit = 1.8 * celsius + 32
+kelvin = celsius + 273
+}
+}
+
+var tenDegreesCelsius = Celsius(celsius: 10.0)
+tenDegreesCelsius.celsius //returns 10.0
+tenDegreesCelsius.kelvin //returns 283.0
+tenDegreesCelsius.fahrenheit //returns 50.0
+```
+c. Give the `Celsius` struct a method called `isBelowFreezing` that returns a `Bool` (true if the temperature is below freezing).
+```swift
+struct Celsius {
+var celsius = 0.0
+var fahrenheit = Double()
+var kelvin = Double()
+
+init (celsius:Double){
+fahrenheit = 1.8 * celsius + 32
+kelvin = celsius + 273
+}
+func isBelowFreezing () -> Bool{
+if celsius <= 0.0 {
+return true
+}else{
+return false
+}
+
+}
+}
+
+let temp = Celsius.init(celsius: 10.0).isBelowFreezing()
+```
 
 ## Question 10
 
@@ -239,12 +580,69 @@ let colorDictArray: [[String: Double]] = [["red": 1.0, "green": 0.0, "blue": 0.0
  ["red": 0.5, "green": 0.1, "blue": 0.9],]
 ```
 
+```swift
+struct RGBColor {
+var red:Double
+var green:Double
+var blue: Double
+}
+var colorRGBArray = [RGBColor]()
+for dict in colorDictArray {
+colorRGBArray += [RGBColor(red: dict["red"]!, green: dict["green"]!, blue: dict["blue"]!)]
+}
+```
 
 ## Question 11
 
 a. Create a class called `Movie` that has properties for `name` (`String`), `year` (`Int`), `genre` (`String`), `cast` (`[String]`), and `description` (`String`). Create an instance of your `Movie` class
 
+```swift
+class Movies {
+var name:String
+var year:Int
+var genre:String
+var cast:[String]
+var discription:String
+
+init (name:String, year:Int, genre:String, cast:[String], discription:String){
+self .name = name
+self .year = year
+self .genre = genre
+self .cast = cast
+self .discription = discription
+}
+}
+
+var bestMovieEver = Movies(name: "Avengers EndGame", year: 2019, genre: "Action", cast: ["mike, fredlyne"], discription: "best movie ever")
+```
+
 b. Create an instance method inside `Movie` called `blurb` that returns a formatted string describing the movie.
+
+```swift
+class Movies {
+var name:String
+var year:Int
+var genre:String
+var cast:[String]
+var discription:String
+
+init (name:String, year:Int, genre:String, cast:[String], discription:String){
+self .name = name
+self .year = year
+self .genre = genre
+self .cast = cast
+self .discription = discription
+}
+func blurb () -> String {
+
+let discriptions =  "\(name) came out in \(year). It was an good film starring \(cast) and it was the \(discription)"
+return discriptions
+}
+}
+
+var bestMovieEver = Movies(name: "Avengers EndGame", year: 2019, genre: "Action", cast: ["mike, fredlyne"], discription: "best movie ever")
+
+```
 
 Ex: "Borat came out in 2006. It was an odd film starring Sacha Baron Cohen as a man named Borat who was visiting America from Kazakhstan."
 
@@ -287,6 +685,44 @@ if let yearAsString = dieHardDict["year"] as? String {
 } else {
  print("this didn't work")
 }
+```
+
+```swift
+let dieHardDict: [String: Any] = ["name": "Die Hard",
+"year" : 1987,
+"genre": "action",
+"cast": ["Bruce Willis", "Alan Rickman"],
+"description": "John Mclain saves the day!"]
+
+class Movies {
+var name:String
+var year:Int
+var genre:String
+var cast:[String]
+var discription:String
+
+init (name:String, year:Int, genre:String, cast:[String], discription:String){
+self .name = name
+self .year = year
+self .genre = genre
+self .cast = cast
+self .discription = discription
+}
+func blurb () -> String {
+
+let discriptions =  "\(name) came out in \(year). It was an good film starring \(cast) and it was the \(discription)"
+return discriptions
+}
+}
+
+
+func makeMovie (movie:[String:Any]) -> Movies? {
+
+return Movies(name: movie["name"] as! String, year: movie["year"] as! Int, genre: movie["genre"] as! String, cast: movie["cast"] as! [String], discription: movie["description"] as! String)
+}
+
+var goodMovie = makeMovie(movie: dieHardDict)
+
 ```
 
 ## Question 13
@@ -362,4 +798,36 @@ var movies: [[String:Any]] = [
  "description": "Navy S.E.A.L. sniper Chris Kyle\"s pinpoint accuracy saves countless lives on the battlefield and turns him into a legend. Back home to his wife and kids after four tours of duty, however, Chris finds that it is the war he can\"t leave behind."
  ]
 ]
+```
+```swift
+
+class Movies {
+var name:String
+var year:Int
+var genre:String
+var cast:[String]
+var discription:String
+
+init (name:String, year:Int, genre:String, cast:[String], discription:String){
+self .name = name
+self .year = year
+self .genre = genre
+self .cast = cast
+self .discription = discription
+}
+func blurb () -> String {
+
+let discriptions =  "\(name) came out in \(year). It was an good film starring \(cast) and it was the \(discription)"
+return discriptions
+}
+}
+
+
+func makeMovie (movie:[String:Any]) -> [Movies]{
+var movieArray = [Movies]()
+for _ in movie{
+movieArray += [Movies(name: movie["name"] as! String, year: movie["year"] as! Int, genre: movie["genre"] as! String, cast: movie["cast"] as! [String], discription: movie["description"] as! String)]
+}
+return movieArray
+}
 ```
